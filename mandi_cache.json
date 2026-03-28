@@ -1,0 +1,48 @@
+{
+  "<फसल>_<शहर>": {
+    "price": 2158,
+    "weather": "unknown",
+    "weather_detail": {
+      "rain_days": 0,
+      "desc_hi": "मौसम जानकारी उपलब्ध नहीं (नेटवर्क समस्या)",
+      "desc_en": "Weather unavailable (network issue)"
+    },
+    "verdict": "🌾 *<फसल> — <शहर> मंडी भाव*\n\n💰 आज का भाव: ₹2,158/quintal\n🌦️ मौसम: मौसम जानकारी उपलब्ध नहीं (नेटवर्क समस्या)\n📊 सलाह: अभी बेचें या 1-2 दिन प्रतीक्षा करें, अनुमानित ₹2,179 मिलेगा\n\n——\n*<फसल> — <शहर> Mandi Price*\n\n💰 Today's Price: ₹2,158/quintal\n🌦️ Weather: Weather unavailable (network issue)\n📊 Advice: Sell now or wait 1-2 days, estimated ₹2,179\n\n📶 _(ऑफलाइन डेटा — 999 घंटे पहले का)_\n_(cached 999 hours ago)_",
+    "timestamp": "2026-03-27T18:29:44.740253+00:00"
+  },
+  "wheat_jaipur": {
+    "price": 2181,
+    "weather": "unknown",
+    "weather_detail": {
+      "summary": "rain",
+      "rain_days": 2,
+      "desc_hi": "अगले 2 दिन बारिश",
+      "desc_en": "Rain expected 2 days"
+    },
+    "verdict": "🌾 *गेहूं — Jaipur मंडी भाव*\n\n💰 आज का भाव: ₹2,181/quintal\n🌦️ मौसम: अगले 2 दिन बारिश\n📊 सलाह: 3 दिन रुककर बेचें, अनुमानित ₹2,246 मिलेगा\n\n——\n*Wheat — Jaipur Mandi Price*\n\n💰 Today's Price: ₹2,181/quintal\n🌦️ Weather: Rain expected 2 days\n📊 Advice: Wait 3 days to sell, estimated ₹2,246\n\n📶 _(ऑफलाइन डेटा — 999 घंटे पहले का)_\n_(cached 999 hours ago)_",
+    "timestamp": "2026-03-27T18:31:21.102214+00:00"
+  },
+  "wheat_jaipur /mandi rice delhi /scheme kisan /mandi onion nashik": {
+    "price": 2181,
+    "weather": "unknown",
+    "weather_detail": {
+      "rain_days": 0,
+      "desc_hi": "मौसम जानकारी उपलब्ध नहीं (नेटवर्क समस्या)",
+      "desc_en": "Weather unavailable (network issue)"
+    },
+    "verdict": "🌾 *गेहूं — Jaipur /mandi rice delhi /scheme kisan /mandi onion nashik मंडी भाव*\n\n💰 आज का भाव: ₹2,181/quintal\n🌦️ मौसम: मौसम जानकारी उपलब्ध नहीं (नेटवर्क समस्या)\n📊 सलाह: अभी बेचें या 1-2 दिन प्रतीक्षा करें, अनुमानित ₹2,202 मिलेगा\n\n——\n*Wheat — Jaipur /mandi rice delhi /scheme kisan /mandi onion nashik Mandi Price*\n\n💰 Today's Price: ₹2,181/quintal\n🌦️ Weather: Weather unavailable (network issue)\n📊 Advice: Sell now or wait 1-2 days, estimated ₹2,202\n\n📶 _(ऑफलाइन डेटा — 999 घंटे पहले का)_\n_(cached 999 hours ago)_",
+    "timestamp": "2026-03-27T18:32:41.278751+00:00"
+  },
+  "rice_delhi": {
+    "price": 2236,
+    "weather": "unknown",
+    "weather_detail": {
+      "summary": "clear",
+      "rain_days": 0,
+      "desc_hi": "मौसम साफ़ रहेगा",
+      "desc_en": "Clear weather expected"
+    },
+    "verdict": "🌾 *चावल — Delhi मंडी भाव*\n\n💰 आज का भाव: ₹2,236/quintal\n🌦️ मौसम: मौसम साफ़ रहेगा\n📊 सलाह: अभी बेचें या 1-2 दिन प्रतीक्षा करें, अनुमानित ₹2,258 मिलेगा\n\n——\n*Rice — Delhi Mandi Price*\n\n💰 Today's Price: ₹2,236/quintal\n🌦️ Weather: Clear weather expected\n📊 Advice: Sell now or wait 1-2 days, estimated ₹2,258\n\n📶 _(ऑफलाइन डेटा — 999 घंटे पहले का)_\n_(cached 999 hours ago)_",
+    "timestamp": "2026-03-28T17:18:57.611269+00:00"
+  }
+}

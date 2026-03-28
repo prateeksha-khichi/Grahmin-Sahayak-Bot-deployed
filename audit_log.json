@@ -1,0 +1,62 @@
+[
+  {
+    "user_id": "5691981926",
+    "timestamp": "2026-03-27T23:59:45.151706+05:30",
+    "question_asked": "/mandi <फसल> <शहर>",
+    "data_source_used": "Agmarknet+OpenWeatherMap",
+    "rule_triggered": "mandi_price_weather_verdict",
+    "confidence_level": "medium",
+    "response_summary": "🌾 *<फसल> — <शहर> मंडी भाव*\n\n💰 आज का भाव: ₹2,158/quintal\n🌦️ मौसम: मौसम जानकारी उपलब्ध नहीं (नेटवर्क समस्या)\n📊 सलाह: अभी बेचें या 1-2 दिन प्रतीक्षा करें, अनुमानित ₹2,179 मिलेगा\n\n——\n*<फसल> — <शहर> Mandi ",
+    "compliance_flags": []
+  },
+  {
+    "user_id": "5691981926",
+    "timestamp": "2026-03-28T00:01:21.501867+05:30",
+    "question_asked": "/mandi wheat jaipur",
+    "data_source_used": "Agmarknet+OpenWeatherMap",
+    "rule_triggered": "mandi_price_weather_verdict",
+    "confidence_level": "medium",
+    "response_summary": "🌾 *गेहूं — Jaipur मंडी भाव*\n\n💰 आज का भाव: ₹2,181/quintal\n🌦️ मौसम: अगले 2 दिन बारिश\n📊 सलाह: 3 दिन रुककर बेचें, अनुमानित ₹2,246 मिलेगा\n\n——\n*Wheat — Jaipur Mandi Price*\n\n💰 Today's Price: ₹2,181/quintal\n🌦",
+    "compliance_flags": []
+  },
+  {
+    "user_id": "5691981926",
+    "timestamp": "2026-03-28T00:02:41.684631+05:30",
+    "question_asked": "/mandi wheat jaipur /mandi rice delhi /scheme kisan /mandi onion nashik",
+    "data_source_used": "Agmarknet+OpenWeatherMap",
+    "rule_triggered": "mandi_price_weather_verdict",
+    "confidence_level": "medium",
+    "response_summary": "🌾 *गेहूं — Jaipur /mandi rice delhi /scheme kisan /mandi onion nashik मंडी भाव*\n\n💰 आज का भाव: ₹2,181/quintal\n🌦️ मौसम: मौसम जानकारी उपलब्ध नहीं (नेटवर्क समस्या)\n📊 सलाह: अभी बेचें या 1-2 दिन प्रतीक्षा क",
+    "compliance_flags": []
+  },
+  {
+    "user_id": "5691981926",
+    "timestamp": "2026-03-28T00:03:56.030363+05:30",
+    "question_asked": "What is interest rate for Kishan credit card",
+    "data_source_used": "RAG",
+    "rule_triggered": "rag_text_query",
+    "confidence_level": "medium",
+    "response_summary": "किसान क्रेडिट कार्ड के लिए ब्याज दर वही है जो फसल ऋण के लिए है, जो कि वेयरहाउस में अपनी फसल रखने के लिए नगदी वेयरहाउस रिसीवर्ट के खिलाफ उपलब्ध है।\n\n📚 Sources: Budget.pdf, agriculture-credit-overview.p",
+    "compliance_flags": []
+  },
+  {
+    "user_id": "5691981926",
+    "timestamp": "2026-03-28T22:48:58.062973+05:30",
+    "question_asked": "/mandi rice delhi",
+    "data_source_used": "Agmarknet+OpenWeatherMap",
+    "rule_triggered": "mandi_price_weather_verdict",
+    "confidence_level": "medium",
+    "response_summary": "🌾 *चावल — Delhi मंडी भाव*\n\n💰 आज का भाव: ₹2,236/quintal\n🌦️ मौसम: मौसम साफ़ रहेगा\n📊 सलाह: अभी बेचें या 1-2 दिन प्रतीक्षा करें, अनुमानित ₹2,258 मिलेगा\n\n——\n*Rice — Delhi Mandi Price*\n\n💰 Today's Price: ₹2,",
+    "compliance_flags": []
+  },
+  {
+    "user_id": "5691981926",
+    "timestamp": "2026-03-28T23:01:46.345490+05:30",
+    "question_asked": "[VOICE:ta] எக்ஸ்ப்பிள்ளின் பிய முத்திர யூஜனம்",
+    "data_source_used": "RAG+VoiceSTT",
+    "rule_triggered": "voice_message_handler",
+    "confidence_level": "medium",
+    "response_summary": "எக்ஸ்ப்பிள்ளின் பிய முத்திர யூஜனம் என்பது ஒரு வங்கித் தொகை யூஜனம். இது விவசாயக் கடன் மற்றும் மேம்பாட்டுத் தொகைக்காக பயன்படுகிறது. இது விவசாயிகளுக்கு கடன் வழங்குவதற்கு மாநில அரசுகள் மற்றும் தேசிய விவசா",
+    "compliance_flags": []
+  }
+]

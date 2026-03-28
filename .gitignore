@@ -1,0 +1,40 @@
+# Environment
+.env
+.venv/
+venv/
+env/
+
+# Python Cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# =========================================================
+# LFS / Data / Models (Prevent > 100MB Github Blocking!)
+# =========================================================
+# ONLY IGNORE THE LARGE ONE! (So the other 6 mini-models can push successfully)
+models/loan_eligibility/loan_eligibility_model.pkl
+
+# Ignore Hugging Face Embedding models which can exceed 700MB
+models/embeddings/
+*.safetensors
+
+faiss_index/
+*.h5
+*.joblib
+*.bin
+*.pt
+*.onnx
+*.index
+*.sqlite3
+data/
+
+# Temporary / OS
+.DS_Store
+Thumbs.db
+temp_audio/
+uploads/
+audio/
+logs/
+pip_log.txt
+pip_error.txt
