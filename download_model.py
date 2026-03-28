@@ -7,7 +7,8 @@ MODEL_PATH = os.path.join(MODEL_DIR, "loan_eligibility_model.pkl")
 
 # We use an environment variable so you can set this in Railway's dashboard securely.
 # To get this ID: Share the Google Drive file -> "Anyone with the link" -> Copy the ID from the link.
-GDRIVE_FILE_ID = os.getenv("GOOGLE_DRIVE_MODEL_ID", "YOUR_GOOGLE_DRIVE_FILE_ID_HERE")
+# Hardcoded as fallback — no env variable needed!
+GDRIVE_FILE_ID = os.getenv("GOOGLE_DRIVE_MODEL_ID", "11TiSpJTC493sAnm0xuooaDc5hGzej6Js")
 
 def download_model():
     print("="*50)
