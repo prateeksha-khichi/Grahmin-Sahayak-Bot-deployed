@@ -16,8 +16,8 @@ echo "📚 [2/3] Building RAG Local Index..."
 python build_index.py
 
 # 3. Set the required Port
-# Railway assigns random ports. Using $PORT is MANDATORY. 8000 is our fallback.
-PORT="${PORT:-8000}"
+# HF Spaces uses 7860. $PORT handles other platforms.
+PORT="${PORT:-7860}"
 
 # 4. Run the API and the Telegram Bot concurrently
 echo "🌐 [3/3] Igniting FastAPI Server on Port $PORT..."

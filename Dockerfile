@@ -27,5 +27,7 @@ COPY . .
 # IMPORTANT: Ensure the launch shell script has executable permissions
 RUN chmod +x start.sh
 
+EXPOSE 7860
+
 # The script does model downloading, FAISS index builds, and boots Bot + backend
 CMD ["bash", "start.sh"]
