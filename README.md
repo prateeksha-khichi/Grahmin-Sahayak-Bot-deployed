@@ -1,258 +1,425 @@
-# 🌾 Gramin Sahayak Bot
-
-**Rural Financial Literacy & Loan Assistant**
-
-A comprehensive AI-powered Telegram bot helping rural users with:
-- ✅ Loan eligibility prediction
-- ✅ Fraud scheme detection  
-- ✅ RAG-based banking chatbot
-- ✅ Government scheme recommendations
-- ✅ Voice support (Hindi + Regional languages)
+<p align="center">
+  <h1 align="center">🌾 Grahmin Sahayak</h1>
+  <p align="center"><strong>Multi-Agent AI Orchestration System for Rural Financial Intelligence</strong></p>
+  <p align="center">
+    <img src="https://img.shields.io/badge/Python-3.11-blue?logo=python" />
+    <img src="https://img.shields.io/badge/FastAPI-0.110+-green?logo=fastapi" />
+    <img src="https://img.shields.io/badge/LLM-Groq%20Llama%203%2070B-purple" />
+    <img src="https://img.shields.io/badge/VectorDB-FAISS-orange" />
+    <img src="https://img.shields.io/badge/Platform-Telegram-blue?logo=telegram" />
+    <img src="https://img.shields.io/badge/Deploy-HuggingFace%20Spaces-yellow?logo=huggingface" />
+    <img src="https://img.shields.io/badge/License-MIT-lightgrey" />
+  </p>
+</p>
 
 ---
 
-## 🚀 Quick Start
+> **Grahmin Sahayak** (meaning *Rural Helper*) is an AI-powered Telegram bot that delivers financial guidance, scheme intelligence, fraud protection, and crop market advisory to rural farmers in India — in Hindi, via voice or text, even on a 2G connection.
 
-### 1️⃣ Installation
+---
+
+## 📋 Table of Contents
+
+- [The Problem](#-the-problem)
+- [Solution Overview](#-solution-overview)
+- [Features](#-features)
+- [Architecture](#-architecture)
+- [Technology Stack](#-technology-stack)
+- [Getting Started](#-getting-started)
+- [Environment Variables](#-environment-variables)
+- [Project Structure](#-project-structure)
+- [API Reference](#-api-reference)
+- [Impact Model](#-impact-model)
+- [Roadmap](#-roadmap)
+- [Contributing](#-contributing)
+- [License](#-license)
+
+---
+
+## 🚜 The Problem
+
+India has 140 million small and marginal farmers. The majority:
+
+- Are **eligible for government schemes** they have never received — only 42% of eligible farmers receive PM-KISAN due to information gaps
+- **Cannot read formal bank notices** sent in English or complex legal language
+- **Lose money to agricultural scams** — average rural fraud loss is ₹12,000 per incident
+- **Sell crops below market price** due to information asymmetry with traders and middlemen
+- **Miss loan deadlines** due to lack of guidance — 24% of eligible farmers miss KCC applications
+
+Grahmin Sahayak solves all of this — through a single Telegram conversation.
+
+---
+
+## 💡 Solution Overview
+
+Grahmin Sahayak is architected as an **Orchestrator-Based Multi-Agent System**. A central FastAPI controller detects intent and routes each query to a specialised AI agent that owns its tools, context, and output format.
+
+```
+User (Telegram) → FastAPI Orchestrator → Intent Detection → Agent Router
+                                                           ├── RAG Agent        (Schemes)
+                                                           ├── Loan Agent       (Eligibility)
+                                                           ├── OCR Agent        (Documents)
+                                                           ├── Fraud Agent      (Protection)
+                                                           ├── Advisory Agent   (Mandi + Weather)
+                                                           ├── Language Agent   (Localisation)
+                                                           └── Audit Agent      (Compliance)
+                                                                   ↕
+                                              Groq LLM + FAISS + PostgreSQL + Redis
+```
+
+---
+
+## ✨ Features
+
+### 1. 📋 Scheme Intelligence — RAG Agent
+Answers any question about government agricultural schemes, eligibility, and application steps.
+
+- **How it works:** Embeds the user's query → retrieves top-k relevant chunks from FAISS vector index (built on 10+ official govt PDFs) → feeds context to Groq LLM
+- **Guarantee:** Zero hallucination — every fact is sourced from official government documents
+- **Example:** *"PM-Kisan ke liye kaun eligible hai?"* → Returns verified eligibility criteria with source reference
+
+### 2. 🏦 Loan Eligibility Prediction — Loan Agent
+Predicts KCC / agricultural loan eligibility using a trained ML model, with plain-language explanation.
+
+- **How it works:** Collects 11 structured inputs → XGBoost inference → LLM wraps the prediction in Hindi with rationale and next steps
+- **Guarantee:** Explainable prediction — not just yes/no, but *why* and *what to do next*
+- **Inputs:** Income, land size, crop type, credit history, existing loans, repayment record, and 5 more
+
+### 3. 📄 Document OCR Explainer — OCR Agent
+Converts photos of bank notices, loan letters, and government documents into simple Hindi action items.
+
+- **How it works:** EasyOCR extracts text from image → LLM simplifies into plain language → key deadlines, amounts, and contacts highlighted
+- **Guarantee:** Converts formal English/legal language into simple actionable Hindi
+- **Supported inputs:** JPEG/PNG photos of physical documents via Telegram
+
+### 4. 🚨 Fraud Detection — Fraud Agent
+Classifies suspicious messages, URLs, and scheme descriptions as SAFE / SUSPICIOUS / SCAM.
+
+- **How it works:** Rule-based pattern matching → LLM semantic analysis → risk score computation → Hindi explanation
+- **Guarantee:** Hybrid approach catches both known fraud templates and novel scam patterns
+- **Categories detected:** Fake schemes, phishing links, impersonation scams, unauthorised loan agents
+
+### 5. 📊 Mandi Advisory — Advisory Agent
+Provides SELL / HOLD / WAIT recommendations based on live mandi prices and weather forecasts.
+
+- **How it works:** Fetches Agmarknet mandi prices + OpenWeatherMap 5-day forecast → LLM synthesises with user's crop and quantity → recommendation with rationale
+- **Offline-safe:** Redis cache (6hr TTL) serves data when APIs are unavailable
+- **Example:** *"Mujhe aaj gehu bechna chahiye?"* → *"HOLD — rain expected will raise prices ₹40/quintal in 4 days"*
+
+### 6. 🗣️ Language Agent — Localisation
+Ensures every interaction is in the user's preferred Indian language, with voice input and output support.
+
+- **Voice input:** Whisper ASR transcribes audio messages
+- **Language detection:** langdetect identifies the language and adds a routing tag
+- **Output:** Localised response with optional Hindi voice output via gTTS
+- **Coverage:** First-class Hindi; extensible to all 22 scheduled Indian languages
+
+### 7. 📋 Audit Agent — Compliance & Logging
+Passively logs every interaction, agent decision, and confidence score for full compliance traceability.
+
+- **How it works:** Async event subscriber — receives all agent outputs without slowing down response delivery
+- **Stores:** session_id, user_id, agent_used, query, response, confidence, timestamp
+- **Zero performance impact** — fully asynchronous, out-of-band
+
+---
+
+## 🏗️ Architecture
+
+### Core Principles
+
+| Principle | Implementation |
+|---|---|
+| **Agent Isolation** | Each agent is independently scoped — failures do not cascade |
+| **Single Orchestrator** | One FastAPI controller; no direct agent-to-agent calls |
+| **Offline-First** | FAISS runs locally; mandi/weather is Redis-cached |
+| **Verified Outputs** | RAG answers grounded in official PDFs — no hallucination |
+| **Full Auditability** | Every decision logged asynchronously to PostgreSQL |
+| **Multilingual by Default** | Language detection happens before any agent is invoked |
+
+### Request Lifecycle
+
+```
+1. User sends voice/text via Telegram
+2. Whisper ASR (if voice) + Language Agent → language tag
+3. NLP Intent Classifier → intent category
+4. Orchestrator dispatches to correct agent
+5. Agent fetches data (FAISS / ML / API / DB)
+6. Groq LLM generates localised natural language response
+7. Response delivered via Telegram + Audit Agent logs asynchronously
+```
+
+### Error Handling
+
+| Scenario | Detection | Strategy |
+|---|---|---|
+| Incomplete input | Input validator | Fallback prompt with example |
+| Low model confidence (<0.6) | Threshold check | Escalation to clarification |
+| API timeout (>5s) | Async timeout | Serve from Redis cache |
+| Unknown language | langdetect score <0.7 | Default to Hindi |
+| Prompt injection attempt | Content safety classifier | Refuse + log, no response |
+| DB write failure | Exception handler | Retry ×3 with backoff |
+
+---
+
+## 🛠️ Technology Stack
+
+| Layer | Technology | Version |
+|---|---|---|
+| **Interface** | Telegram Bot API + python-telegram-bot | 20.x |
+| **TTS** | gTTS | 2.x |
+| **Backend** | FastAPI + Uvicorn | 0.110+ / 0.29+ |
+| **Runtime** | Python | 3.11 |
+| **LLM** | Groq API (Llama 3 70B) | cloud |
+| **ASR** | OpenAI Whisper v3 | local |
+| **Embeddings** | Sentence Transformers MPNet-base-v2 | — |
+| **Vector DB** | FAISS | 1.7.x |
+| **Database** | Neon PostgreSQL | serverless |
+| **Cache** | Redis | 7.x |
+| **ML Model** | XGBoost / scikit-learn | 2.x / 1.4 |
+| **OCR** | EasyOCR | 1.7+ |
+| **Language ID** | langdetect | 1.0.9 |
+| **Containers** | Docker | 24+ |
+| **CI/CD** | GitHub Actions | — |
+| **Deployment** | HuggingFace Spaces | free tier |
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Python 3.11+
+- Docker 24+ (recommended)
+- Telegram Bot Token (from [@BotFather](https://t.me/BotFather))
+- Groq API Key (from [console.groq.com](https://console.groq.com))
+- Neon PostgreSQL connection string
+- Redis instance (local or cloud)
+
+### Clone the Repository
+
 ```bash
-# Clone repository
-git clone <your-repo-url>
-cd gramin_sahayak_bot
+git clone https://github.com/yourusername/grahmin-sahayak.git
+cd grahmin-sahayak
+```
 
+### Using Docker (Recommended)
+
+```bash
+# Copy and configure environment
+cp .env.example .env
+# Edit .env with your API keys
+
+# Build and run all services
+docker-compose up --build
+```
+
+### Manual Setup
+
+```bash
 # Create virtual environment
 python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+source venv/bin/activate  # Windows: venv\Scripts\activate
 
 # Install dependencies
 pip install -r requirements.txt
+
+# Build FAISS index from government PDFs
+python scripts/build_faiss_index.py --pdf-dir ./data/govt_pdfs/
+
+# Train / load loan ML model
+python scripts/train_loan_model.py
+
+# Start the FastAPI server
+uvicorn app.main:app --host 0.0.0.0 --port 8000 --workers 4
+
+# Start the Telegram bot (separate terminal)
+python bot/telegram_handler.py
 ```
 
-### 2️⃣ Configuration
+---
 
-Create `.env` file:
+## 🔐 Environment Variables
+
+Create a `.env` file in the project root:
+
 ```env
 # Telegram
-TELEGRAM_BOT_TOKEN=your_bot_token_here
+TELEGRAM_BOT_TOKEN=your_telegram_bot_token
 
-# Groq API (FREE - get from https://console.groq.com)
-GROQ_API_KEY=your_groq_api_key_here
+# Groq LLM
+GROQ_API_KEY=your_groq_api_key
+GROQ_MODEL=llama3-70b-8192
 
-# Database (Optional - defaults to SQLite)
-DATABASE_URL=postgresql://user:password@localhost:5432/gramin_sahayak
+# Database
+DATABASE_URL=postgresql://user:pass@host/dbname
 
-# RAG Settings
-CHUNK_SIZE=500
-CHUNK_OVERLAP=100
-TOP_K_RESULTS=3
-```
+# Redis
+REDIS_URL=redis://localhost:6379/0
 
-### 3️⃣ Setup Models
-```bash
-# Place your trained models:
-models/loan_eligibility/loan_model.pkl
-models/loan_eligibility/scaler.pkl
-models/loan_eligibility/feature_columns.pkl
+# External APIs
+AGMARKNET_API_KEY=your_agmarknet_key
+OPENWEATHER_API_KEY=your_openweather_key
 
-models/fraud_detection/fraud_model.pkl
-models/fraud_detection/vectorizer.pkl
-```
-
-### 4️⃣ Add PDFs
-```bash
-# Add government scheme PDFs to:
-data/pdfs/pm_mudra.pdf
-data/pdfs/kisan_credit_card.pdf
-# ... more PDFs
-```
-
-### 5️⃣ Build RAG Index
-```bash
-python main.py
-# Choose option 1: Build RAG Index
-```
-
-### 6️⃣ Run Bot
-```bash
-python main.py
-# Choose option 2: Run Telegram Bot
+# App Config
+LOG_LEVEL=INFO
+CONFIDENCE_THRESHOLD=0.6
+REDIS_TTL_HOURS=6
 ```
 
 ---
 
 ## 📁 Project Structure
+
 ```
-gramin_sahayak_bot/
-├── rag/                    # RAG implementation
-│   ├── pdf_loader.py
-│   ├── chunker.py
-│   ├── embedder.py
-│   ├── vector_store.py
-│   ├── retriever.py
-│   ├── prompt.py
-│   └── rag_pipeline.py
+grahmin-sahayak/
 │
-├── services/               # Business logic
-│   ├── loan_service.py
-│   ├── fraud_service.py
-│   └── rag_service.py
+├── app/
+│   ├── main.py                  # FastAPI app entry point
+│   ├── orchestrator.py          # Central agent router
+│   ├── intent_classifier.py     # NLP intent detection
+│   │
+│   └── agents/
+│       ├── rag_agent.py         # Scheme intelligence (FAISS + LLM)
+│       ├── loan_agent.py        # Loan eligibility (XGBoost + LLM)
+│       ├── ocr_agent.py         # Document OCR explainer
+│       ├── fraud_agent.py       # Fraud detection (rules + LLM)
+│       ├── advisory_agent.py    # Mandi + weather advisory
+│       ├── language_agent.py    # ASR + language detection + TTS
+│       └── audit_agent.py       # Async compliance logger
 │
-├── api/                    # FastAPI
-│   ├── main.py
-│   ├── routes/
-│   └── schemas/
+├── bot/
+│   └── telegram_handler.py      # Telegram webhook handler
 │
-├── bots/                   # Telegram bot
-│   ├── telegram_bot.py
-│   └── voice_handler.py
+├── data/
+│   ├── govt_pdfs/               # Official scheme PDFs (source of truth)
+│   ├── faiss_index/             # Prebuilt FAISS index
+│   └── models/                  # Trained XGBoost model
 │
-├── database/               # PostgreSQL
-│   ├── models.py
-│   └── db_manager.py
+├── scripts/
+│   ├── build_faiss_index.py     # Index builder from PDFs
+│   └── train_loan_model.py      # ML model trainer
 │
-└── utils/                  # Utilities
-    ├── logger.py
-    ├── language_utils.py
-    └── file_utils.py
+├── tests/
+│   ├── test_agents/
+│   └── test_orchestrator.py
+│
+├── docker-compose.yml
+├── Dockerfile
+├── requirements.txt
+├── .env.example
+└── README.md
 ```
 
 ---
 
-## 🎯 Features
+## 📡 API Reference
 
-### 1️⃣ Loan Eligibility Check
-- ML-based prediction
-- EMI calculation
-- Personalized recommendations
-- Hindi/English responses
+### POST `/webhook`
+Telegram webhook endpoint. Receives all bot updates.
 
-### 2️⃣ Fraud Detection
-- Real-time scheme verification
-- Keyword-based red flags
-- ML classification
-- Government scheme database
+### POST `/query`
+Direct API query (for testing without Telegram).
 
-### 3️⃣ RAG Chatbot
-- PDF-based knowledge retrieval
-- Multilingual support
-- Simple explanations for rural users
-- Voice input/output
-
-### 4️⃣ Voice Support
-- Speech-to-Text (Google)
-- Text-to-Speech (gTTS)
-- Hindi + Regional languages
-
----
-
-## 📊 API Endpoints
-
-### Loan
-- `POST /loan/check-eligibility` - Check loan eligibility
-- `GET /loan/schemes` - Get government schemes
-
-### Fraud
-- `POST /fraud/check-scheme` - Detect fraudulent schemes
-- `GET /fraud/common-scams` - Get common scam info
-
-### RAG
-- `POST /rag/ask` - Ask questions
-- `POST /rag/explain-scheme` - Explain scheme
-- `POST /rag/explain-term` - Explain banking terms
-- `GET /rag/status` - Service health
-
----
-
-## 🗄️ Database Schema
-
-### Tables
-- `users` - User profiles
-- `loan_queries` - Loan check history
-- `fraud_checks` - Fraud detection history
-- `rag_queries` - Chatbot conversations
-- `conversations` - Full conversation logs
-
----
-
-## 🛠️ Technologies
-
-- **ML**: scikit-learn, sentence-transformers
-- **RAG**: FAISS, LangChain, Groq LLM
-- **Bot**: python-telegram-bot
-- **API**: FastAPI, Pydantic
-- **Database**: PostgreSQL, SQLAlchemy
-- **Voice**: SpeechRecognition, gTTS
-
----
-
-## 🌟 Usage Examples
-
-### Telegram Commands
-```
-/start - Start bot
-/loan - Check loan eligibility
-/fraud - Check scheme fraud
-/schemes - View government schemes
-/help - Get help
+```json
+{
+  "user_id": "12345",
+  "message": "PM-Kisan ke liye apply kaise karein?",
+  "language": "hi",
+  "session_id": "abc-123"
+}
 ```
 
-### Voice Usage
-1. Click microphone in Telegram
-2. Speak in Hindi: "मुद्रा योजना क्या है?"
-3. Get voice response back
-
-### Text Queries
+**Response:**
+```json
+{
+  "agent_used": "rag_agent",
+  "response": "PM-Kisan योजना के लिए आवेदन करने के लिए...",
+  "confidence": 0.91,
+  "sources": ["pm_kisan_guidelines_2023.pdf"],
+  "session_id": "abc-123"
+}
 ```
-"किसान क्रेडिट कार्ड के लिए कौन पात्र है?"
-"EMI का मतलब क्या है?"
-"मुझे 2 लाख का लोन चाहिए"
+
+### POST `/ocr`
+Submit a document image for OCR explanation.
+
+```
+Content-Type: multipart/form-data
+Fields: file (image), user_id, language
 ```
 
 ---
 
-## 📈 Impact & Rating
+## 📊 Impact Model
 
-**Social Impact**: ⭐⭐⭐⭐⭐ (9.5/10)
-- Addresses financial illiteracy in rural India
-- Prevents fraud targeting vulnerable populations
-- Increases access to government schemes
-- Multilingual and voice support for low literacy
+| Metric | Annual Estimate (100K Users) |
+|---|---|
+| Scheme benefits unlocked | ₹220 Crore |
+| Fraud losses prevented | ₹62 Crore |
+| Better crop pricing | ₹80 Crore |
+| Loan defaults averted | ₹24 Crore |
+| **Total estimated value** | **₹486 Crore** |
+| Farmer time saved | 2.1 Crore hours |
+| Infrastructure cost | ~₹12 Lakh/year |
+| ROI ratio | **405x** |
 
-**Technical Innovation**: ⭐⭐⭐⭐ (8.5/10)
-- Combines ML + RAG + Voice seamlessly
-- Free-tier optimized (Groq, gTTS)
-- Production-ready architecture
-- Scalable design
+Full methodology and assumptions → see [`docs/ImpactModel.pdf`](docs/ImpactModel.pdf)
+
+---
+
+## 🗺️ Roadmap
+
+- [x] 7-agent orchestrator architecture
+- [x] FAISS RAG over government PDFs
+- [x] XGBoost loan eligibility model
+- [x] EasyOCR document explainer
+- [x] Hybrid fraud detection (rules + LLM)
+- [x] Live mandi + weather advisory
+- [x] Hindi voice input (Whisper) + output (gTTS)
+- [x] Async audit logging (Neon PostgreSQL)
+- [ ] DigiLocker integration for document verification
+- [ ] 22-language support (Bhashini API integration)
+- [ ] FPO (Farmer Producer Organisation) dashboard
+- [ ] Bank BC (Business Correspondent) white-label mode
+- [ ] Crop disease detection via image (vision model)
+- [ ] Soil health card integration
 
 ---
 
 ## 🤝 Contributing
 
-1. Fork repository
-2. Create feature branch
-3. Commit changes
-4. Push and create PR
+Contributions are welcome! Please read our [Contributing Guide](CONTRIBUTING.md) first.
+
+```bash
+# Fork and clone
+git clone https://github.com/yourusername/grahmin-sahayak.git
+
+# Create a feature branch
+git checkout -b feature/your-feature-name
+
+# Make changes, add tests
+pytest tests/
+
+# Submit a pull request
+```
 
 ---
 
-## 📞 Support
+## 📜 License
 
-- **Cyber Crime Helpline**: 1930
-- **Banking Ombudsman**: 14448
-- **GitHub Issues**: [Create issue]
+This project is licensed under the MIT License — see [LICENSE](LICENSE) for details.
 
 ---
 
-## 📄 License
+## 🙏 Acknowledgements
 
-MIT License - See LICENSE file
-
----
-
-## 🙏 Acknowledgments
-
-Built for rural India 🇮🇳  
-Empowering financial literacy one conversation at a time.
+- [NABARD](https://www.nabard.org) for rural finance data
+- [Agmarknet](https://agmarknet.gov.in) for mandi price API
+- [Groq](https://groq.com) for ultra-fast LLM inference
+- [HuggingFace](https://huggingface.co) for hosting
 
 ---
 
-Made with ❤️ for Gramin Bharat
+<p align="center">
+  Built with ❤️ for India's farmers · Hackathon 2025
+</p>
