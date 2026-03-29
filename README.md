@@ -363,7 +363,6 @@ Fields: file (image), user_id, language
 | Infrastructure cost | ~₹12 Lakh/year |
 | ROI ratio | **405x** |
 
-Full methodology and assumptions → see [`docs/ImpactModel.pdf`](docs/ImpactModel.pdf)
 
 ---
 
