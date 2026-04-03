@@ -20,6 +20,8 @@ python-multipart>=0.0.6
 sqlalchemy>=2.0.25
 # Use psycopg2-binary for broad compatibility; psycopg3 only if Neon requires it
 psycopg2-binary>=2.9.9
+psycopg>=3.1.18
+psycopg-binary>=3.1.18
 alembic>=1.13.1
 greenlet>=3.0.3
 
@@ -146,3 +148,4 @@ prometheus-fastapi-instrumentator>=6.1.0
 # ----------------------------
 gunicorn>=21.2.0
 gdown>=5.1.0
+huggingface_hub>=0.20.0
